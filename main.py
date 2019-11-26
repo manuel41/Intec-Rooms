@@ -13,4 +13,5 @@ import requests
 with requests.Session() as s:
     url = "https://procesos.intec.edu.do/"
     r = s.get(url)
-    print(r.content)
+    pos_req = s.post(url, data=login_data)
+    print(pos_req.content)
