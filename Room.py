@@ -1,6 +1,6 @@
 class Room(object):
-    def __init__(self, name, monday, tuesday, wednesday, thursday, friday, saturday):
-        self.name = name
+    def __init__(self):
+        self.name = ''
         self.monday = []
         self.tuesday = []
         self.wednesday = []
