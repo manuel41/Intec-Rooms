@@ -8,63 +8,23 @@ class Room(object):
         self.friday = []
         self.saturday = []
 
-    def ParseTime(self, time, day):
-        if day == 'monday':
-            if time[0] != '0':
-                self.monday.append(int(time[0]))
-            else:
-                self.monday.append(int(time[0:-3]))
-            if time[2] != '0':
-                self.monday.append(int(time[2]))
-            else:
-                self.monday.append(int(time[2:]))
+    def ParseTime(time):
+        ini, fin = 0, 0
+        if time[1] == '/':
+            ini = int(time[0])
+            fin = int(time[2:])
+            return [ini, fin]
+        else:
+            ini = int(time[0:2])
+            fin = int(time[3:])
+            return [ini, fin]
 
-        if day == 'tuesday':
-            if time[0] != '0':
-                self.tuesday.append(int(time[0]))
-            else:
-                self.tuesday.append(int(time[0:-3]))
-            if time[2] != '0':
-                self.tuesday.append(int(time[2]))
-            else:
-                self.tuesday.append(int(time[2:]))
 
-        if day == 'wednesday':
-            if time[0] != '0':
-                self.wednesday.append(int(time[0]))
-            else:
-                self.wednesday.append(int(time[0:-3]))
-            if time[2] != '0':
-                self.wednesday.append(int(time[2]))
-            else:
-                self.wednesday.append(int(time[2:]))
 
-        if day == 'thursday':
-            if time[0] != '0':
-                self.thursday.append(int(time[0]))
-            else:
-                self.thursday.append(int(time[0:-3]))
-            if time[2] != '0':
-                self.thursday.append(int(time[2]))
-            else:
-                self.thursday.append(int(time[2:]))
-
-        if day == 'friday':
-            if time[0] != '0':
-                self.friday.append(int(time[0]))
-            else:
-                self.friday.append(int(time[0:-3]))
-            if time[2] != '0':
-                self.friday.append(int(time[2]))
-            else:
-                self.friday.append(int(time[2:]))
-
-        if day == 'saturday':
-            if time[0] != '0':
-                self.saturday.append(int(time[0]))
-            else:
-                self.saturday.append(int(time[0:-3]))
-            if time[2] != '0':
-                self.saturday.append(int(time[2]))
-            else:
-                self.saturday.append(int(time[2:]))
+if __name__ == '__main__':
+    # room = Room()
+    # print(room.ParseTime('18/20', 'monday'))
+    # print(room.ParseTime('7/9', 'monday'))
+    # print(room.ParseTime('9/11', 'monday'))
+    # time = '18/20'
+    # print(time[3:])
