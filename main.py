@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup as soup
 import urllib.request as uReq
-from Room import Room
+import Room
 import time
 login = '1088654'#input('Inserte su ID: ')
 passw = 'Manuel144'#input('Inserte su contraseña: ')
@@ -24,27 +24,39 @@ with open('Oferta.html') as oferta_get:
     tag = 0
     existingRoom = False
     for x in asig_tags:
-        if tag == 3 and existingRoom == False:
-            for y in range(len(rooms)):
-                if rooms[y].name == x.text:
-                    newroom = rooms[y]
-                    existingRoom = True
-                    break
-                else:
-                    newroom = Room()
-                    existingRoom = True
-                    break
+        if tag == 2 and existingRoom == False and len(x.text) == 5:
+            if len(rooms) == 0:
+                newroom = Room.Room()
+                newroom.name = x.text
+                existingRoom = True
+            else:
+                for y in range(len(rooms)):
+                    if rooms[y].name == x.text:
+                        newroom = rooms[y]
+                        existingRoom = True
+                        break
+            if existingRoom == False:
+                newroom = Room.Room()
+                newroom.name = x.text
+                existingRoom = True
         if x.text != '':
+            if tag == 3:
+                newroom.AddTime(x.text, 'monday')
+            if tag == 4:
+                newroom.AddTime(x.text, 'tuesday')
             if tag == 5:
-                newroom.ParseTime(x.text, 'monday')
+                newroom.AddTime(x.text, 'wednesday')
             if tag == 6:
-                newroom.ParseTime(x.text, 'tuesday')
+                newroom.AddTime(x.text, 'thursday')
             if tag == 7:
-                newroom.ParseTime(x.text, 'wednesday')
+                newroom.AddTime(x.text, 'friday')
             if tag == 8:
-                newroom.ParseTime(x.text, 'thursday')
-            if tag == 9:
-                newroom.ParseTime(x.text, 'friday')
-            if tag == 10:
-                newroom.ParseTime(x.text, 'saturday')
+                newroom.AddTime(x.text, 'saturday')
+        if tag == 8:
+            if newroom in rooms:
+                pass
+            else:
+                rooms.append(newroom)
+            existingRoom = False
+            tag = -1
         tag+=1
