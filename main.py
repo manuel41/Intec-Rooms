@@ -40,18 +40,7 @@ with open('Oferta.html') as oferta_get:
                 newroom.name = x.text
                 existingRoom = True
         if x.text != '':
-            if tag == 3:
-                newroom.AddTime(x.text, 'monday')
-            if tag == 4:
-                newroom.AddTime(x.text, 'tuesday')
-            if tag == 5:
-                newroom.AddTime(x.text, 'wednesday')
-            if tag == 6:
-                newroom.AddTime(x.text, 'thursday')
-            if tag == 7:
-                newroom.AddTime(x.text, 'friday')
-            if tag == 8:
-                newroom.AddTime(x.text, 'saturday')
+            newroom.AddTime(x.text, tag)
         if tag == 8:
             if newroom in rooms:
                 pass
