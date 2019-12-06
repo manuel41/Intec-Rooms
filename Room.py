@@ -8,7 +8,7 @@ class Room(object):
         self.friday = []
         self.saturday = []
 
-    def ParseTime(time):
+    def ParseTime(self, time):
         ini, fin = 0, 0
         if time[1] == '/':
             ini = int(time[0])
@@ -52,13 +52,3 @@ class Room(object):
                     continue
                 self.saturday.append(class_time[0] + x)
                 self.saturday.sort()
-
-
-
-if __name__ == '__main__':
-    # room = Room()
-    # print(room.ParseTime('18/20', 'monday'))
-    # print(room.ParseTime('7/9', 'monday'))
-    # print(room.ParseTime('9/11', 'monday'))
-    # time = '18/20'
-    # print(time[3:])
