@@ -26,26 +26,29 @@ with open('Oferta.html') as oferta_get:
     for x in asig_tags:
         if tag == 2 and existingRoom == False and len(x.text) == 5:
             if len(rooms) == 0:
-                newroom = Room.Room()
-                newroom.name = x.text
+                room = Room.Room()
+                room.name = x.text
                 existingRoom = True
             else:
                 for y in range(len(rooms)):
                     if rooms[y].name == x.text:
-                        newroom = rooms[y]
+                        room = rooms[y]
                         existingRoom = True
                         break
             if existingRoom == False:
-                newroom = Room.Room()
-                newroom.name = x.text
+                room = Room.Room()
+                room.name = x.text
                 existingRoom = True
         if x.text != '':
-            newroom.AddTime(x.text, tag)
+            room.AddTime(x.text, tag)
         if tag == 8:
-            if newroom in rooms:
+            if room in rooms:
                 pass
             else:
-                rooms.append(newroom)
+                rooms.append(room)
             existingRoom = False
             tag = -1
         tag+=1
+
+for x in range(len(rooms)):
+    print(rooms[x].name)
