@@ -22,7 +22,7 @@ class Room(object):
     def AddTime(self, time, tag):
         class_time = self.ParseTime(time)
         hours = class_time[1] - class_time[0]
-        for x in range(hours + 1):
+        for x in range(hours):
             if tag == 3:
                 if class_time[0] + x in self.monday:
                     continue
