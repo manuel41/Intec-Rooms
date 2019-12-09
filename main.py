@@ -18,37 +18,35 @@ passw = 'Manuel144'#input('Inserte su contraseña: ')
 #     print(pos_req.content)
 
 rooms = []
+room_count = 0
+global rooms_section
 with open('Oferta.html') as oferta_get:
     source = soup(oferta_get, 'lxml')
     asig_tags = source.findAll('td', class_='uk-text-center small-column')
     tag = 0
     existingRoom = False
     for x in asig_tags:
-        if tag == 2 and existingRoom == False and len(x.text) == 5:
+        if tag == 2:
+            rooms_section = x.text.split(', ')
+        if tag > 1:
             if len(rooms) == 0:
                 room = Room.Room()
-                room.name = x.text
+                room.name = rooms_section[room_count]
                 existingRoom = True
             else:
-                for y in range(len(rooms)):
-                    if rooms[y].name == x.text:
-                        room = rooms[y]
-                        existingRoom = True
-                        break
-            if existingRoom == False:
                 room = Room.Room()
-                room.name = x.text
-                existingRoom = True
-        if x.text != '':
+                room.name = rooms_section[room_count]
+                for y in range(len(rooms)):
+                    if rooms[y].name == rooms_section[room_count]:
+                        room = rooms[y]
+                        break
+        if x.text != '' and tag > 2:
             room.AddTime(x.text, tag)
+            if room_count + 1 < len(rooms_section):
+                room_count +=1
         if tag == 8:
-            if room in rooms:
-                pass
-            else:
+            if room not in rooms:
                 rooms.append(room)
-            existingRoom = False
             tag = -1
+            room_count = 0
         tag+=1
-
-for x in range(len(rooms)):
-    print(rooms[x].name)
