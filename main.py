@@ -50,3 +50,13 @@ with open('Oferta.html') as oferta_get:
             tag = -1
             room_count = 0
         tag+=1
+
+free_room = []
+t = time.localtime()
+current_time = time.strftime("%H", t)
+for x in range(len(rooms)):
+    if int(current_time) not in rooms[x].monday:
+        free_room.append(rooms[x].name)
+
+free_room.sort()
+print(free_room)
