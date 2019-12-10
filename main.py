@@ -28,26 +28,24 @@ with open('Oferta.html') as oferta_get:
     for x in asig_tags:
         if tag == 2:
             rooms_section = x.text.split(', ')
-        if tag > 1:
-            if len(rooms) == 0:
-                room = Room.Room()
-                room.name = rooms_section[room_count]
-                existingRoom = True
-            else:
-                room = Room.Room()
-                room.name = rooms_section[room_count]
-                for y in range(len(rooms)):
-                    if rooms[y].name == rooms_section[room_count]:
-                        room = rooms[y]
-                        break
+        if tag > 1 and existingRoom == False:
+            room = Room.Room()
+            room.name = rooms_section[room_count]
+            existingRoom = True
+            for y in range(len(rooms)):
+                if rooms[y].name == rooms_section[room_count]:
+                    room = rooms[y]
+                    break
         if x.text != '' and tag > 2:
             room.AddTime(x.text, tag)
-            if room_count + 1 < len(rooms_section):
+            if room_count + 1 > len(rooms_section):
                 room_count +=1
+                existingRoom = False
         if tag == 8:
             if room not in rooms:
                 rooms.append(room)
             tag = -1
+            existingRoom = False
             room_count = 0
         tag+=1
 
@@ -55,8 +53,13 @@ free_room = []
 t = time.localtime()
 current_time = time.strftime("%H", t)
 for x in range(len(rooms)):
-    if int(current_time) not in rooms[x].monday:
+    if 18 not in rooms[x].thursday:
         free_room.append(rooms[x].name)
+        # print(rooms[x].monday)
+        # print(rooms[x].wednesday)
+        # print(rooms[x].thursday)
+        # print(rooms[x].friday)
+        # print(rooms[x])
 
 free_room.sort()
 print(free_room)
