@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup as soup
 import urllib.request as uReq
 import Room
 from datetime import date as date
+import time
 
 login = '1088654'#input('Inserte su ID: ')
 passw = 'Manuel144'#input('Inserte su contraseña: ')
@@ -19,7 +20,8 @@ passw = 'Manuel144'#input('Inserte su contraseña: ')
 #     print(pos_req.content)
 
 rooms = []
-room_count = 0
+time_list = []
+time_count = 0
 global rooms_section
 with open('Oferta.html') as oferta_get:
     source = soup(oferta_get, 'lxml')
@@ -29,25 +31,39 @@ with open('Oferta.html') as oferta_get:
     for x in asig_tags:
         if tag == 2:
             rooms_section = x.text.split(', ')
-        if tag > 1 and existingRoom == False:
-            room = Room.Room()
-            room.name = rooms_section[room_count]
-            existingRoom = True
-            for y in range(len(rooms)):
-                if rooms[y].name == rooms_section[room_count]:
-                    room = rooms[y]
-                    break
         if x.text != '' and tag > 2:
-            room.AddTime(x.text, tag)
-            if room_count + 1 > len(rooms_section):
-                room_count +=1
-                existingRoom = False
+            time_list.append(x.text)
+            time_list.append(tag)
         if tag == 8:
-            if room not in rooms:
-                rooms.append(room)
+            hours = int(len(time_list)/2)
+            count = 0
+            room_count = 0
+            excount = 0
+            if time_list != []:
+                for a in range(hours):
+                    room = Room.Room()
+                    room.name = rooms_section[room_count]
+                    for y in range(len(rooms)):
+                        if rooms[y].name == rooms_section[room_count]:
+                            room = rooms[y]
+                            break
+                    if hours == len(rooms_section):
+                        room.AddTime(time_list[count], time_list[count+1])
+                        room_count += 1
+                    elif len(rooms_section) == 1:
+                        room.AddTime(time_list[count], time_list[count+1])
+                    elif hours == 3 and len(rooms_section) == 2:
+                        excount+=1
+                        room.AddTime(time_list[count], time_list[count+1])
+                    if excount == 2:
+                        room_count+=1
+                    count += 2
+                    if room not in rooms:
+                        rooms.append(room)
             tag = -1
             existingRoom = False
             room_count = 0
+            time_list.clear()
         tag+=1
 
 main_loop = True
@@ -69,6 +85,8 @@ while(main_loop):
             time_loop = False
         else:
             print('Opcion invalida, favor intente de nuevo')
+
+    print(f'Hora seleccionada: {selected_time}')
 
     day_loop = True
     while(day_loop):
@@ -96,6 +114,7 @@ while(main_loop):
             day_loop = False
         else:
             print('Opcion invalida, favor intente de nuevo')
+    print(f'Dia seleccionado: {weekday}')
 
     for x in range(len(rooms)):
         if int(selected_time) not in rooms[x].monday and weekday == 0:
