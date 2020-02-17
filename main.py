@@ -35,31 +35,36 @@ with open('Oferta.html') as oferta_get:
             time_list.append(x.text)
             time_list.append(tag)
         if tag == 8:
-            hours = int(len(time_list)/2)
-            count = 0
-            room_count = 0
-            excount = 0
-            if time_list != []:
-                for a in range(hours):
-                    room = Room.Room()
-                    room.name = rooms_section[room_count]
-                    for y in range(len(rooms)):
-                        if rooms[y].name == rooms_section[room_count]:
-                            room = rooms[y]
-                            break
-                    if hours == len(rooms_section):
-                        room.AddTime(time_list[count], time_list[count+1])
-                        room_count += 1
-                    elif len(rooms_section) == 1:
-                        room.AddTime(time_list[count], time_list[count+1])
-                    elif hours == 3 and len(rooms_section) == 2:
-                        excount+=1
-                        room.AddTime(time_list[count], time_list[count+1])
-                    if excount == 2:
-                        room_count+=1
-                    count += 2
-                    if room not in rooms:
-                        rooms.append(room)
+            if len(rooms_section) == 1 and rooms_section[0] == 'VT1':
+                pass
+            else:
+                if 'VT1' in rooms_section:
+                    rooms_section.remove('VT1')
+                hours = int(len(time_list)/2)
+                count = 0
+                room_count = 0
+                excount = 0
+                if time_list != []:
+                    for a in range(hours):
+                        room = Room.Room()
+                        room.name = rooms_section[room_count]
+                        for y in range(len(rooms)):
+                            if rooms[y].name == rooms_section[room_count]:
+                                room = rooms[y]
+                                break
+                        if hours == len(rooms_section):
+                            room.AddTime(time_list[count], time_list[count+1])
+                            room_count += 1
+                        elif len(rooms_section) == 1:
+                            room.AddTime(time_list[count], time_list[count+1])
+                        elif hours == 3 and len(rooms_section) == 2:
+                            excount+=1
+                            room.AddTime(time_list[count], time_list[count+1])
+                        if excount == 2:
+                            room_count+=1
+                        count += 2
+                        if room not in rooms:
+                            rooms.append(room)
             tag = -1
             existingRoom = False
             room_count = 0
@@ -136,3 +141,8 @@ while(main_loop):
 
     if exit == '1':
         main_loop = False
+
+for x in range(len(rooms)):
+    if(rooms[x].name == 'GC211'):
+        print(rooms[x].monday)
+        break
